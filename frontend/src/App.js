@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// Diccionario de traducciones para los campos del formulario
+// Diccionario de traducciones para las etiquetas del formulario
 const translations = {
   OverallQual: 'Calidad General',
   GrLivArea: 'Área Habitable (pies²)',
@@ -16,10 +16,14 @@ const translations = {
   Neighborhood: 'Barrio',
   HouseStyle: 'Estilo de Vivienda',
   SaleCondition: 'Condición de Venta',
+  NumeroDeEscuelasCercanas: 'Escuelas Cercanas (en radio de 1 milla)',
 };
 
 function App() {
-  const [modelType, setModelType] = useState('simple');
+  // Estado para el tipo de modelo a usar (inicia con el mejor: enriquecido)
+  const [modelType, setModelType] = useState('enriched');
+
+  // Estado para los datos del formulario (incluye todos los campos posibles)
   const [formData, setFormData] = useState({
     OverallQual: 7,
     GrLivArea: 1710,
@@ -31,20 +35,27 @@ function App() {
     YearRemodAdd: 2003,
     FullBath: 2,
     TotRmsAbvGrd: 8,
+    // Campo para el modelo enriquecido
+    NumeroDeEscuelasCercanas: 3, 
+    // Campos para el modelo complejo
     Neighborhood: 'CollgCr',
     HouseStyle: '2Story',
     SaleCondition: 'Normal',
   });
+
+  // Estado para guardar la predicción, errores y estado de carga
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Maneja los cambios en los inputs del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     const parsedValue = e.target.type === 'number' ? parseInt(value, 10) : value;
     setFormData(prev => ({ ...prev, [name]: parsedValue }));
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -53,12 +64,18 @@ function App() {
 
     const endpoint = `http://127.0.0.1:8000/predict/${modelType}`;
     
+    // Construir el payload correcto según el modelo seleccionado
     let payload = {};
+    const simpleFields = ['OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars', 'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd', 'FullBath', 'TotRmsAbvGrd'];
+    
     if (modelType === 'simple') {
-      const { OverallQual, GrLivArea, TotalBsmtSF, GarageCars, GarageArea, '1stFlrSF': firstFlrSF, YearBuilt, YearRemodAdd, FullBath, TotRmsAbvGrd } = formData;
-      payload = { OverallQual, GrLivArea, TotalBsmtSF, GarageCars, GarageArea, '1stFlrSF': firstFlrSF, YearBuilt, YearRemodAdd, FullBath, TotRmsAbvGrd };
-    } else {
-      payload = formData;
+      simpleFields.forEach(field => payload[field] = formData[field]);
+    } else if (modelType === 'enriched') {
+      const enrichedFields = [...simpleFields, 'NumeroDeEscuelasCercanas'];
+      enrichedFields.forEach(field => payload[field] = formData[field]);
+    } else { // complex
+      const complexFields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'SaleCondition'];
+      complexFields.forEach(field => payload[field] = formData[field]);
     }
 
     try {
@@ -81,10 +98,12 @@ function App() {
     }
   };
 
+  // Renderiza los campos del formulario dinámicamente
   const renderFormFields = () => {
     const simpleFields = ['OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars', 'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd', 'FullBath', 'TotRmsAbvGrd'];
     const complexOnlyFields = ['Neighborhood', 'HouseStyle', 'SaleCondition'];
-    
+    const enrichedOnlyField = 'NumeroDeEscuelasCercanas';
+
     return (
       <>
         {simpleFields.map(field => (
@@ -93,6 +112,14 @@ function App() {
             <input type="number" name={field} value={formData[field]} onChange={handleChange} required />
           </div>
         ))}
+
+        {modelType === 'enriched' && (
+          <div className="form-group" key={enrichedOnlyField}>
+            <label>{translations[enrichedOnlyField]}</label>
+            <input type="number" name={enrichedOnlyField} value={formData[enrichedOnlyField]} onChange={handleChange} required />
+          </div>
+        )}
+
         {modelType === 'complex' && complexOnlyFields.map(field => (
           <div className="form-group" key={field}>
             <label>{translations[field]}</label>
@@ -115,6 +142,10 @@ function App() {
           <label>
             <input type="radio" value="complex" checked={modelType === 'complex'} onChange={(e) => setModelType(e.target.value)} />
             Modelo Complejo
+          </label>
+          <label>
+            <input type="radio" value="enriched" checked={modelType === 'enriched'} onChange={(e) => setModelType(e.target.value)} />
+            Modelo Enriquecido ✨
           </label>
         </div>
 
