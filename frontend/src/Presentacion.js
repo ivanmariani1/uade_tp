@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import "./Presentacion.css";
 import { FaChartLine, FaUsers, FaCogs } from "react-icons/fa";
 import { SiPython, SiFastapi, SiReact, SiNumpy } from "react-icons/si"; 
+import graficoEDA from './assets/grafico.png';
 
 export default function Presentacion() {
   return (
@@ -143,7 +144,7 @@ export default function Presentacion() {
           área habitable, baños, garaje, año de construcción y
           variables de contexto como barrio.
         </p>
-        <img src="ruta/a/grafico.png" alt="EDA" />
+        <img src={graficoEDA} alt="Gráfico Comparativo de Modelos" className="eda-image" />
         <p>
           Se identificaron correlaciones clave entre superficie,
           calidad y año de construcción con el precio final.
@@ -174,6 +175,11 @@ export default function Presentacion() {
             <FaCogs className="icon" />
             <h3>Modelo Complejo</h3>
             <p>Incluye variables categóricas como barrio y estilo de vivienda.</p>
+          </div>
+          <div className="card">
+            <FaCogs className="icon" />
+            <h3>Modelo Categorico</h3>
+            <p>Determina si un vivienda tiene un percio bajo, medio o alto.</p>
           </div>
         </div>
       </motion.section>
