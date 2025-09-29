@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
 import Presentacion from './Presentacion';
+import Visualizacion from './Visualizacion';
+import ETL from './ETL';
+import './ETL.css'; // Importa los nuevos estilos
 
 // Diccionario de traducciones para las etiquetas del formulario
 const translations = {
@@ -185,8 +188,8 @@ function App() {
                   />
                   {m === 'simple' && 'Modelo Simple'}
                   {m === 'complex' && 'Modelo Complejo'}
-                  {m === 'enriched' && 'Modelo Enriquecido ✨'}
-                  {m === 'categorical' && 'Modelo Categórico 🏷️'}
+                  {m === 'enriched' && 'Modelo Enriquecido'}
+                  {m === 'categorical' && 'Modelo Categórico'}
                 </label>
               ))}
             </div>
@@ -219,12 +222,9 @@ function App() {
           </div>
         );
       case 'visualizacion':
-        return (
-          <div>
-            <h2>Visualización de Datos</h2>
-            <p>Aquí irán los gráficos y análisis de datos.</p>
-          </div>
-        );
+        return <Visualizacion />;
+      case 'etl': 
+        return <ETL />;
       default:
         return null;
     }
@@ -239,6 +239,8 @@ function App() {
                 className={activeTab==='modelos' ? 'active' : ''}>Modelos</button>
         <button onClick={() => setActiveTab('visualizacion')}
                 className={activeTab==='visualizacion' ? 'active' : ''}>Visualización de Datos</button>
+        <button onClick={() => setActiveTab('etl')}
+            className={activeTab==='etl' ? 'active' : ''}>Proceso ETL</button>
       </aside>
 
       <main className="main-content">
