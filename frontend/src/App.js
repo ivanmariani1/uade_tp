@@ -18,13 +18,12 @@ const translations = {
   HouseStyle: 'Estilo de Vivienda',
   SaleCondition: 'Condición de Venta',
   NumeroDeEscuelasCercanas: 'Escuelas Cercanas (en radio de 1 milla)',
+  BldgType: 'Tipo de Edificación',
+  MSZoning: 'Zonificación',
 };
 
 function App() {
-  // Estado del menú lateral: "presentacion", "modelos", "visualizacion"
   const [activeTab, setActiveTab] = useState('presentacion');
-
-  // Estado para los datos del formulario (incluye todos los campos posibles)
   const [modelType, setModelType] = useState('enriched');
   const [formData, setFormData] = useState({
     OverallQual: 7,
@@ -37,9 +36,7 @@ function App() {
     YearRemodAdd: 2003,
     FullBath: 2,
     TotRmsAbvGrd: 8,
-    // Campo para el modelo enriquecido
-    NumeroDeEscuelasCercanas: 3, 
-    // Campos para el modelo complejo
+    NumeroDeEscuelasCercanas: 3,
     Neighborhood: 'CollgCr',
     HouseStyle: '2Story',
     SaleCondition: 'Normal',
@@ -47,19 +44,16 @@ function App() {
     MSZoning: 'RL',
   });
 
-  // Estado para guardar la predicción, errores y estado de carga
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Maneja los cambios en los inputs del formulario
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const parsedValue = e.target.type === 'number' ? parseInt(value, 10) : value;
-    setFormData(prev => ({ ...prev, [name]: parsedValue }));
+    const { name, value, type } = e.target;
+    const parsed = type === 'number' ? parseInt(value, 10) : value;
+    setFormData((prev) => ({ ...prev, [name]: parsed }));
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -67,191 +61,192 @@ function App() {
     setError('');
 
     const endpoint = `http://127.0.0.1:8000/predict/${modelType}`;
+    const simpleFields = [
+      'OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars',
+      'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd',
+      'FullBath', 'TotRmsAbvGrd'
+    ];
 
-    // Construir el payload correcto según el modelo seleccionado
-    let payload = {};
-    const simpleFields = ['OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars', 'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd', 'FullBath', 'TotRmsAbvGrd'];
-
-    if(modelType==='simple') simpleFields.forEach(f=>payload[f]=formData[f]);
-    else if(modelType==='enriched') [...simpleFields,'NumeroDeEscuelasCercanas'].forEach(f=>payload[f]=formData[f]);
-    else [...simpleFields,'Neighborhood','HouseStyle','SaleCondition'].forEach(f=>payload[f]=formData[f]);
-    
+    let fields = [];
     if (modelType === 'simple') {
-      simpleFields.forEach(field => payload[field] = formData[field]);
+      fields = simpleFields;
     } else if (modelType === 'enriched') {
-      const enrichedFields = [...simpleFields, 'NumeroDeEscuelasCercanas'];
-      enrichedFields.forEach(field => payload[field] = formData[field]);
-    } else if (modelType === 'complex') { 
-      const complexFields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'SaleCondition'];
-      complexFields.forEach(field => payload[field] = formData[field]);
-    }else if (modelType === 'categorical') { 
-      const categoricalFields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'BldgType', 'MSZoning']; 
-      categoricalFields.forEach(field => payload[field] = formData[field]); }
+      fields = [...simpleFields, 'NumeroDeEscuelasCercanas'];
+    } else if (modelType === 'complex') {
+      fields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'SaleCondition'];
+    } else if (modelType === 'categorical') {
+      fields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'BldgType', 'MSZoning'];
+    }
+
+    const payload = {};
+    fields.forEach(f => payload[f] = formData[f]);
 
     try {
-      const response = await fetch(endpoint,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(payload),
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error('La respuesta de la red no fue exitosa.');
-      const data = await response.json();
-      if (modelType === "categorical" && data.predicted_category) {
-          setPrediction(data.predicted_category);  
-        } else if (data.predicted_price) {
-          setPrediction(data.predicted_price);    
-        } else {
-          setError(data.error || 'Ocurrió un error desconocido.');
-        }
-    } catch (err) {
-      setError('No se pudo conectar con la API. ¿Está el servidor de backend funcionando?');
+      if (!res.ok) throw new Error('Error de red');
+      const data = await res.json();
+
+      if (modelType === 'categorical' && data.predicted_category) {
+        setPrediction(data.predicted_category);
+      } else if (data.predicted_price) {
+        setPrediction(data.predicted_price);
+      } else {
+        setError(data.error || 'Ocurrió un error desconocido.');
+      }
+    } catch {
+      setError('No se pudo conectar con la API. ¿Está el backend funcionando?');
     } finally {
       setLoading(false);
     }
   };
 
-  // Renderiza los campos del formulario dinámicamente
   const renderFormFields = () => {
-    const simpleFields = ['OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars', 'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd', 'FullBath', 'TotRmsAbvGrd'];
-    const complexOnlyFields = ['Neighborhood', 'HouseStyle', 'SaleCondition'];
-    const enrichedOnlyField = 'NumeroDeEscuelasCercanas';
-    const categoricalOnlyFields = ['Neighborhood', 'HouseStyle', 'BldgType', 'MSZoning'];
-    
+    const simpleFields = [
+      'OverallQual','GrLivArea','TotalBsmtSF','GarageCars','GarageArea',
+      '1stFlrSF','YearBuilt','YearRemodAdd','FullBath','TotRmsAbvGrd'
+    ];
+    const enrichedOnly = ['NumeroDeEscuelasCercanas'];
+    const complexOnly = ['Neighborhood','HouseStyle','SaleCondition'];
+    const categoricalOnly = ['Neighborhood','HouseStyle','BldgType','MSZoning'];
+
     return (
       <>
         {simpleFields.map(f=>(
           <div className="form-group" key={f}>
             <label>{translations[f]}</label>
-            <input type="number" name={f} value={formData[f]} onChange={handleChange} required/>
+            <input
+              type="number"
+              name={f}
+              value={formData[f]}
+              onChange={handleChange}
+              required
+            />
           </div>
         ))}
-        {modelType==='enriched' && (
-          <div className="form-group" key={enrichedOnlyField}>
-            <label>{translations[enrichedOnlyField]}</label>
-            <input type="number" name={enrichedOnlyField} value={formData[enrichedOnlyField]} onChange={handleChange} required/>
-          </div>
-        )}
-        {modelType==='complex' && complexOnlyFields.map(f=>(
+        {modelType === 'enriched' && enrichedOnly.map(f=>(
           <div className="form-group" key={f}>
             <label>{translations[f]}</label>
-            <input type="text" name={f} value={formData[f]} onChange={handleChange} required/>
+            <input
+              type="number"
+              name={f}
+              value={formData[f]}
+              onChange={handleChange}
+              required
+            />
           </div>
         ))}
-        {modelType === 'categorical' && categoricalOnlyFields.map(field => ( 
-          <div className="form-group" key={field}> <label>{translations[field]}</label> 
-          <input type="text" name={field} value={formData[field]} onChange={handleChange} required /> 
-          </div> ))}
+        {modelType === 'complex' && complexOnly.map(f=>(
+          <div className="form-group" key={f}>
+            <label>{translations[f]}</label>
+            <input
+              type="text"
+              name={f}
+              value={formData[f]}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        ))}
+        {modelType === 'categorical' && categoricalOnly.map(f=>(
+          <div className="form-group" key={f}>
+            <label>{translations[f]}</label>
+            <input
+              type="text"
+              name={f}
+              value={formData[f]}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        ))}
       </>
     );
   };
 
-  // Contenido según la pestaña seleccionada
   const renderContent = () => {
-    switch(activeTab){
+    switch (activeTab) {
       case 'presentacion':
         return <Presentacion />;
       case 'modelos':
         return (
           <div>
             <div className="model-selector">
-              <label>
-                <input type="radio" value="simple" checked={modelType==='simple'} onChange={e=>setModelType(e.target.value)}/>
-                Modelo Simple
-              </label>
-              <label>
-                <input type="radio" value="complex" checked={modelType==='complex'} onChange={e=>setModelType(e.target.value)}/>
-                Modelo Complejo
-              </label>
-              <label>
-                <input type="radio" value="enriched" checked={modelType==='enriched'} onChange={e=>setModelType(e.target.value)}/>
-                Modelo Enriquecido ✨
-              </label>
+              {['simple','complex','enriched','categorical'].map(m => (
+                <label key={m}>
+                  <input
+                    type="radio"
+                    value={m}
+                    checked={modelType === m}
+                    onChange={e => setModelType(e.target.value)}
+                  />
+                  {m === 'simple' && 'Modelo Simple'}
+                  {m === 'complex' && 'Modelo Complejo'}
+                  {m === 'enriched' && 'Modelo Enriquecido ✨'}
+                  {m === 'categorical' && 'Modelo Categórico 🏷️'}
+                </label>
+              ))}
             </div>
 
             <form onSubmit={handleSubmit}>
               <div className="form-grid">{renderFormFields()}</div>
-              <button type="submit" disabled={loading}>{loading ? 'Prediciendo...' : 'Predecir Precio'}</button>
+              <button type="submit" disabled={loading}>
+                {loading ? 'Prediciendo...' : 
+                 modelType === 'categorical' ? 'Predecir Categoría' : 'Predecir Precio'}
+              </button>
             </form>
 
-            {prediction!==null && (
+            {prediction !== null && (
               <div className="result">
-                <h2>Precio Estimado:</h2>
-                <p>${new Intl.NumberFormat('es-AR',{maximumFractionDigits:2}).format(prediction)}</p>
+                {modelType === 'categorical' ? (
+                  <>
+                    <h2>Categoría de Precio Estimada:</h2>
+                    <p>{prediction}</p>
+                  </>
+                ) : (
+                  <>
+                    <h2>Precio Estimado:</h2>
+                    <p>${new Intl.NumberFormat('es-AR', { maximumFractionDigits: 2 }).format(prediction)}</p>
+                  </>
+                )}
               </div>
             )}
+
             {error && <div className="error"><p>{error}</p></div>}
           </div>
         );
       case 'visualizacion':
-        return <div>
-          <h2>Visualización de Datos</h2>
-          <p>Aquí irán los gráficos y análisis de datos.</p>
-        </div>;
-      default: return null;
+        return (
+          <div>
+            <h2>Visualización de Datos</h2>
+            <p>Aquí irán los gráficos y análisis de datos.</p>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
   return (
     <div className="App">
       <aside className="sidebar">
-        <button onClick={()=>setActiveTab('presentacion')} className={activeTab==='presentacion'?'active':''}>Presentación</button>
-        <button onClick={()=>setActiveTab('modelos')} className={activeTab==='modelos'?'active':''}>Modelos</button>
-        <button onClick={()=>setActiveTab('visualizacion')} className={activeTab==='visualizacion'?'active':''}>Visualización de Datos</button>
+        <button onClick={() => setActiveTab('presentacion')}
+                className={activeTab==='presentacion' ? 'active' : ''}>Presentación</button>
+        <button onClick={() => setActiveTab('modelos')}
+                className={activeTab==='modelos' ? 'active' : ''}>Modelos</button>
+        <button onClick={() => setActiveTab('visualizacion')}
+                className={activeTab==='visualizacion' ? 'active' : ''}>Visualización de Datos</button>
       </aside>
+
       <main className="main-content">
         <header>
           <h1>Predictor de Precios de Viviendas</h1>
         </header>
         {renderContent()}
       </main>
-      <header className="App-header">
-        <h1>Predictor de Precios de Viviendas</h1>
-        <div className="model-selector">
-          <label>
-            <input type="radio" value="simple" checked={modelType === 'simple'} onChange={(e) => setModelType(e.target.value)} />
-            Modelo Simple
-          </label>
-          <label>
-            <input type="radio" value="complex" checked={modelType === 'complex'} onChange={(e) => setModelType(e.target.value)} />
-            Modelo Complejo
-          </label>
-          <label>
-            <input type="radio" value="enriched" checked={modelType === 'enriched'} onChange={(e) => setModelType(e.target.value)} />
-            Modelo Enriquecido ✨
-          </label>
-          <label> <input type="radio" value="categorical" checked={modelType === 'categorical'} onChange={(e) => setModelType(e.target.value)} />
-           Modelo Categórico 🏷️ </label>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-grid">
-            {renderFormFields()}
-          </div>
-          <button type="submit" disabled={loading}>{loading ? 'Prediciendo...' : 'Predecir Precio'}</button>
-        </form>
-
-       {prediction !== null && (
-          <div className="result">
-            {modelType === "categorical" ? (
-              <>
-                <h2>Categoría de Precio Estimada:</h2>
-                <p>{prediction}</p>
-              </>
-            ) : (
-              <>
-                <h2>Precio Estimado:</h2>
-                <p>${new Intl.NumberFormat('es-AR', { maximumFractionDigits: 2 }).format(prediction)}</p>
-              </>
-            )}
-          </div>
-        )}
-
-        {error && (
-          <div className="error">
-            <p>{error}</p>
-          </div>
-        )}
-      </header>
     </div>
   );
 }
