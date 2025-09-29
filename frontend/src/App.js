@@ -41,6 +41,8 @@ function App() {
     Neighborhood: 'CollgCr',
     HouseStyle: '2Story',
     SaleCondition: 'Normal',
+    BldgType: '1Fam',
+    MSZoning: 'RL',
   });
 
   // Estado para guardar la predicción, errores y estado de carga
@@ -73,10 +75,12 @@ function App() {
     } else if (modelType === 'enriched') {
       const enrichedFields = [...simpleFields, 'NumeroDeEscuelasCercanas'];
       enrichedFields.forEach(field => payload[field] = formData[field]);
-    } else { // complex
+    } else if (modelType === 'complex') { 
       const complexFields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'SaleCondition'];
       complexFields.forEach(field => payload[field] = formData[field]);
-    }
+    }else if (modelType === 'categorical') { 
+      const categoricalFields = [...simpleFields, 'Neighborhood', 'HouseStyle', 'BldgType', 'MSZoning']; 
+      categoricalFields.forEach(field => payload[field] = formData[field]); }
 
     try {
       const response = await fetch(endpoint, {
@@ -86,11 +90,13 @@ function App() {
       });
       if (!response.ok) throw new Error('La respuesta de la red no fue exitosa.');
       const data = await response.json();
-      if (data.predicted_price) {
-        setPrediction(data.predicted_price);
-      } else {
-        setError(data.error || 'Ocurrió un error desconocido.');
-      }
+      if (modelType === "categorical" && data.predicted_category) {
+          setPrediction(data.predicted_category);  
+        } else if (data.predicted_price) {
+          setPrediction(data.predicted_price);    
+        } else {
+          setError(data.error || 'Ocurrió un error desconocido.');
+        }
     } catch (err) {
       setError('No se pudo conectar con la API. ¿Está el servidor de backend funcionando?');
     } finally {
@@ -103,7 +109,8 @@ function App() {
     const simpleFields = ['OverallQual', 'GrLivArea', 'TotalBsmtSF', 'GarageCars', 'GarageArea', '1stFlrSF', 'YearBuilt', 'YearRemodAdd', 'FullBath', 'TotRmsAbvGrd'];
     const complexOnlyFields = ['Neighborhood', 'HouseStyle', 'SaleCondition'];
     const enrichedOnlyField = 'NumeroDeEscuelasCercanas';
-
+    const categoricalOnlyFields = ['Neighborhood', 'HouseStyle', 'BldgType', 'MSZoning'];
+    
     return (
       <>
         {simpleFields.map(field => (
@@ -126,6 +133,10 @@ function App() {
             <input type="text" name={field} value={formData[field]} onChange={handleChange} required />
           </div>
         ))}
+        {modelType === 'categorical' && categoricalOnlyFields.map(field => ( 
+          <div className="form-group" key={field}> <label>{translations[field]}</label> 
+          <input type="text" name={field} value={formData[field]} onChange={handleChange} required /> 
+          </div> ))}
       </>
     );
   };
@@ -147,6 +158,8 @@ function App() {
             <input type="radio" value="enriched" checked={modelType === 'enriched'} onChange={(e) => setModelType(e.target.value)} />
             Modelo Enriquecido ✨
           </label>
+          <label> <input type="radio" value="categorical" checked={modelType === 'categorical'} onChange={(e) => setModelType(e.target.value)} />
+           Modelo Categórico 🏷️ </label>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -156,10 +169,19 @@ function App() {
           <button type="submit" disabled={loading}>{loading ? 'Prediciendo...' : 'Predecir Precio'}</button>
         </form>
 
-        {prediction !== null && (
+       {prediction !== null && (
           <div className="result">
-            <h2>Precio Estimado:</h2>
-            <p>${new Intl.NumberFormat('es-AR', { maximumFractionDigits: 2 }).format(prediction)}</p>
+            {modelType === "categorical" ? (
+              <>
+                <h2>Categoría de Precio Estimada:</h2>
+                <p>{prediction}</p>
+              </>
+            ) : (
+              <>
+                <h2>Precio Estimado:</h2>
+                <p>${new Intl.NumberFormat('es-AR', { maximumFractionDigits: 2 }).format(prediction)}</p>
+              </>
+            )}
           </div>
         )}
 
