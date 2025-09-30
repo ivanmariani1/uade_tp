@@ -19,7 +19,7 @@ export default function Presentacion() {
         transition={{ duration: 0.8 }}
       >
         <h1>PREDICCION DE PRECIOS DE VIVIENDAS</h1>
-        <p className="autor">Equipo de Desarrollo - 2025
+        <p className="autor">Equipo de Desarrollo - Faraldo, Maria Eugenia - Luciano, Agostina - Mariani, Ivan - Nicolas, Muriel
 
         </p>
 
