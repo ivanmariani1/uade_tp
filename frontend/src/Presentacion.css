@@ -1,20 +1,22 @@
 .presentacion {
   font-family: 'Segoe UI', sans-serif;
-  width: 100%;      /* ✅ ancho completo */
-  margin: 0;        /* eliminar márgenes globales */
+  width: 100%;
+  margin: 0;
   padding: 0;
 }
 
-/* 🔹 Secciones tipo página web */
+
+/* ===============================
+   SECCIONES
+   =============================== */
 .slide {
-  width: 100%;          /* ✅ ancho completo */
-  margin: 0;            /* nada de centrado automático */
-  padding: 6rem 5%;     /* espacio lateral en % para que respire */
+  width: 100%;
+  margin: 0;
+  padding: 2rem 5%;
   display: block;
-  text-align: left;
+  text-align: center;
   box-sizing: border-box;
 }
-
 .slide h1, .slide h2, .slide h3 {
   margin-bottom: 1rem;
   font-weight: bold;
@@ -24,130 +26,149 @@
   line-height: 1.7;
 }
 
-/* 🔹 Portada */
+
+/* ===============================
+   SLIDE PORTADA
+   =============================== */
 .portada {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-color: #1e3a5f;
-  color: white;
+  background-color: #1e3256;
+  color: #e7edf6;
+}
+.portada h1 {
+  font-size: 4rem;
+  background: #1e3256;
+  color: #e5ebf4;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  letter-spacing: 0.5rem;
+}
+.portada .autor { margin-top: 1rem; font-style: italic; }
+.portada .decor {
+  display: flex;
+  justify-content: left;
+  gap: 14px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.portada .decor span{
+  width: 12px;
+  height: 12px;
+  background: #61dafb;
+  border-radius: 50%;
+}
+.portada .decor-svg {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  pointer-events: none;
+  opacity: 1;
 }
 
-.portada h1 { font-size: 3.2rem; margin-bottom: 1rem; }
-.portada h2 { font-size: 2rem; font-weight: 300; }
-.portada .autor { margin-top: 1rem; font-style: italic; }
-
-/* 🔹 Negocio */
+/* ===============================
+   SLIDE DOMINIO DEL NEGOCIO
+   =============================== */
 .negocio {
-  background: white;
+  background: #1e3256;
   display: flex;
   flex-direction: row;
   gap: 2rem;
   text-align: left;
-  padding: 4rem 5%;     /* ✅ mismo patrón */
+  padding: 4rem 5%;
 }
 .negocio .left-box {
   background: #1e3a5f;
-  color: white;
+  color: #e5ebf4;
   padding: 2.5rem;
   flex: 1;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
-.negocio .left-box h2 {
-  font-size: 2.4rem;
-}
-.negocio .left-box hr {
-  border: 1px solid #61dafb;
-  margin: 1.5rem 0;
-}
+.negocio .left-box h2 { font-size: 2.4rem; }
+.negocio .left-box hr { border: 1px solid #61dafb; margin: 1.5rem 0; }
 .negocio .right-box {
   flex: 1;
   padding: 2rem;
-  color: #1e3a5f;
+  color: #b4efff;
   border-left: 4px solid #61dafb;
 }
-.negocio .right-box h3 {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-}
+.negocio .right-box h3 { font-size: 1.6rem; margin-bottom: 1rem; }
 
-/* 🔹 Propuesta */
+
+/* ===============================
+   SLIDE PROPUESTA Y VALOR
+   =============================== */
 .propuesta {
-  background: #f5f7fa;
-  color: #1e3a5f;
+  background: #1e3256;
+  color: #e5ebf4;
   padding: 4rem 5%;
   text-align: left;
+  border: 2px solid #b4efff;
+  border-radius: 1px;
 }
-
 .propuesta h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   border-left: 6px solid #61dafb;
   padding-left: 0.8rem;
+  letter-spacing: 0.2rem;
 }
-
 .propuesta h3 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #1e3a5f;
+  color: #61dafb;
+  letter-spacing: 0.2rem;
 }
-
 .propuesta ul {
   list-style: disc;
   padding-left: 1.5rem;
   line-height: 1.6;
 }
 
+
 /* ===============================
    SLIDE ARQUITECTURA
    =============================== */
 .slide-arquitectura {
-  background: #1e3a5f;
-  color: #ffffff;
+  background: #1e3256;
+  color: #e5ebf4;
   position: relative;
   text-align: center;
   overflow: hidden;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
-
-/* decor */
 .slide-arquitectura .decor {
   display: flex;
   justify-content: center;
   gap: 14px;
   margin-bottom: 30px;
 }
-.slide-arquitectura .decor span {
+.slide-arquitectura .decor span{
   width: 12px;
   height: 12px;
   background: #61dafb;
   border-radius: 50%;
 }
-
-/* titulo */
-/* ▸ Título más grande */
 .slide-arquitectura .titulo {
-  font-size: 3rem;      /* antes 2rem */
-  letter-spacing: 2px;
+  font-size: 6rem; 
+  letter-spacing: 0.2rem;
   font-weight: 800;
   margin-bottom: 50px;
   text-transform: uppercase;
 }
-
-/* ▸ Contenedor de las dos cajas */
 .slide-arquitectura .contenido {
   display: flex;
-  flex-direction: row;   /* horizontal */
+  flex-direction: row;
   justify-content: center;
-  gap: 40px;             /* separación entre cajas */
+  gap: 40px;
   max-width: 1200px;
   margin: 0 auto 40px;
 }
-
-/* ▸ Cada caja */
 .slide-arquitectura .objetivo {
   flex: 1;
   background: rgba(255,255,255,0.07);
@@ -157,40 +178,32 @@
   text-align: left;
   min-width: 300px;
 }
-
-/* ▸ Etiqueta dentro de cada caja */
 .slide-arquitectura .etiqueta {
   background: #61dafb;
-  color: #fff;
+  color: #f4f7fd;
   font-weight: 700;
   padding: 8px 16px;
   margin-bottom: 16px;
   display: inline-block;
   letter-spacing: 4px;
-  font-size: 18px;
+  font-size: 2 rem;
   border-radius: 4px;
 }
-
-/* ▸ Texto dentro de la caja */
 .slide-arquitectura .objetivo p {
-  font-size: 20px;
+  font-size: 2 rem;
   line-height: 1.6;
-  color: #e2e8f0;
+  color: #e5ebf4;
 }
-
-/* recuadro central */
 .slide-arquitectura .arquitectura-box {
   background: #2e9ccf;
-  color: #fff;
+  color: #e5ebf4;
   padding: 20px 30px;
   border-radius: 10px;
   max-width: 600px;
   margin: 20px auto 40px;
   line-height: 1.6;
-  font-size: 18px;
+  font-size: 2 rem;
 }
-
-/* logos */
 .slide-arquitectura .arquitectura-logos {
   display: flex;
   justify-content: center;
@@ -201,15 +214,13 @@
 .slide-arquitectura .arquitectura-logos svg {
   width: 50px;
   height: 50px;
-  color: #ffffff;
+  color: #e5ebf4;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 .slide-arquitectura .arquitectura-logos svg:hover {
   transform: scale(1.15);
   color: #61dafb;
 }
-
-/* ▸ Responsivo */
 @media (max-width: 900px) {
   .slide-arquitectura .contenido {
     flex-direction: column;
@@ -219,61 +230,152 @@
 }
 
 
-
-/* 🔹 EDA */
+/* ===============================
+   SLIDE EDA
+   =============================== */
 .eda {
-  background: #f5f7fa;
-  color: #1e3a5f;
-  padding: 4rem 5%;
-}
-.eda h2 {
-  font-size: 2.4rem;
-}
-.eda img {
-  max-width: 600px;
-  margin: 2rem auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* 🔹 Modelos */
-.modelos {
-  background: #1e3a5f;
-  color: white;
-  padding: 4rem 5%;
-}
-.modelos h2 {
-  text-align: center;
-  font-size: 2.4rem;
-}
-.estrategia-cards {
   display: flex;
-  gap: 2rem;
   justify-content: center;
-  margin-top: 2rem;
+  padding: 1rem 5%;
+  box-sizing: border-box;
 }
-.card {
-  background: white;
-  color: #1e3a5f;
-  padding: 1.5rem;
-  border-radius: 8px;
-  width: 220px;
-  text-align: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease-in-out;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-.card .icon {
-  font-size: 2.5rem;
-  color: #61dafb;
+.eda .stat-content h2 {
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
   margin-bottom: 1rem;
+  text-align: center;
+  color: #e5ebf4;
 }
-body {
-  margin: 0;
-  background: #1e3256; /* color de fondo */
-  font-family: 'Segoe UI', Arial, sans-serif;
+.eda .stat-card {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  background: #1e3256;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 60px;
+  margin: 0 auto;
+}
+.eda .decor-svg {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  pointer-events: none;
+  opacity: 1;
+}
+.eda .decor-topright { top: -40px; right: -60px; transform: rotate(0deg); filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08)); }
+.eda .decor-bottomleft { bottom: -40px; left: -60px; transform: rotate(0deg); filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08)); }
+.eda .stat-content {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 760px;
+  text-align: center;
+  gap: 20px;
+  padding: 0 40px;
+}
+.eda .stat-content h2 { margin-bottom: 1rem; font-size: 2.8rem; }
+.eda .stat-content p { font-size: 1rem; line-height: 1.6; color: rgba(235,242,248,0.9); }
+.eda-image {
+  width: 100%;
+  height: auto; 
+  display: block; 
+  border-radius: 12px;
 }
 
+/* Responsivo */
+@media (max-width: 980px) {
+  .eda .stat-card { padding: 36px 28px; }
+  .eda .decor-svg { width: 360px; height: 360px; }
+}
+@media (max-width: 720px) {
+  .eda .stat-card { padding: 48px 20px; border-radius: 8px; }
+  .eda .decor-svg { width: 280px; height: 280px; opacity: 0.95; }
+  .eda .stat-content h2 { font-size: clamp(2.6rem, 9vw, 4.8rem); }
+  .eda .stat-content p { font-size: 0.99rem; padding: 0 10px; }
+}
+@media (max-width: 420px) {
+  .eda .decor-topright { right: -100px; top: -60px; transform: scale(.8); }
+  .eda .decor-bottomleft { left: -100px; bottom: -60px; transform: scale(.8); }
+  .eda .stat-content { padding: 0 10px; }
+  .eda .stat-btn { padding: 8px 14px; }
+}
+
+
+/* ===============================
+   SLIDE MODELOS
+   =============================== */
+.infografia {
+  background: #1e3256; 
+  color: #e5ebf4;
+  padding: 4rem 5%;
+  text-align: center;
+  border-top: 10px solid #1e3256;
+  border-bottom: 10px solid #1e3256;
+}
+.infografia h2 {
+  font-size: 2.8rem;
+  letter-spacing: 0.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #e5ebf4;
+}
+.infografia-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.texto {
+  flex: 1;
+  max-width: 300px;
+  text-align: left;
+}
+.texto h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.texto p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #dbe3f0;
+  margin-bottom: 1.5rem;
+}
+.iconos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.gota {
+  width: 120px;
+  height: 120px;
+  background: #e5ebf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gota .icon {
+  font-size: 2.5rem;
+  color: #1e3a5f;
+}
+.gota.top-left {
+  border-top-left-radius: 50%;
+}
+.gota.top-right {
+  border-top-right-radius: 50%;
+  background: #61dafb;
+}
+.gota.bottom-left {
+  border-bottom-left-radius: 50%;
+  background: #61dafb;
+}
+.gota.bottom-right {
+  border-bottom-right-radius: 50%;
+}
 

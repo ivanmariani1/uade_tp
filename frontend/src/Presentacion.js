@@ -2,8 +2,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "./Presentacion.css";
-import { FaChartLine, FaUsers, FaCogs } from "react-icons/fa";
-import { SiPython, SiFastapi, SiReact, SiNumpy } from "react-icons/si"; 
+import { FaSeedling, FaHome, FaProjectDiagram, FaTags,FaCogs } from "react-icons/fa";
+import { SiPython, SiFastapi, SiReact, SiNumpy } from "react-icons/si";
 import graficoEDA from './assets/grafico.png';
 
 export default function Presentacion() {
@@ -18,9 +18,21 @@ export default function Presentacion() {
         viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
-        <h1>Propuesta de Negocio</h1>
-        <h2>Predicción de Precios de Viviendas</h2>
-        <p className="autor">Equipo de Desarrollo - 2025</p>
+        <h1>PREDICCION DE PRECIOS DE VIVIENDAS</h1>
+        <p className="autor">Equipo de Desarrollo - 2025
+          
+        </p>
+
+        <div className="decor decor-bottom">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
       </motion.section>
 
       {/* 🔹 Slide 2 - Dominio y Problemática */}
@@ -32,7 +44,7 @@ export default function Presentacion() {
         transition={{ duration: 0.8 }}
       >
         <div className="left-box">
-          <h2>Dominio del Negocio</h2>
+          <h2>DOMINIO DEL NEGOCIO</h2>
           <hr />
           <p>
             El negocio inmobiliario requiere estimaciones precisas de precios
@@ -44,7 +56,7 @@ export default function Presentacion() {
           </p>
         </div>
         <div className="right-box">
-          <h3>Problemática</h3>
+          <h3>PROBLEMATICA</h3>
           <p>
             Las estimaciones actuales suelen ser subjetivas y poco precisas.
           </p>
@@ -63,7 +75,7 @@ export default function Presentacion() {
         viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
-        <h2>Propuesta y Valor</h2>
+        <h2>PROPUESTA Y VALOR</h2>
         <div className="text-box">
           <h3>Beneficios</h3>
           <ul>
@@ -74,119 +86,167 @@ export default function Presentacion() {
         </div>
       </motion.section>
 
-
-{/* 🔹 Slide 4 - Arquitectura */}
-<motion.section
-  className="slide arquitectura"
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: false, amount: 0.3 }}
-  transition={{ duration: 0.8 }}
->
-<div class="slide-arquitectura">
-  <div class="decor decor-top">
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-  </div>
-
-  <h2 class="arquitectura-titulo">ARQUITECTURA DE LA SOLUCION</h2>
-
-  <div class="objetivos">
-    <div class="objetivo">
-      <div class="etiqueta">• F R O N T E N D </div>
-      <p>
-        Interfaz construida en React permite que los usuarios carguen los datos de una vivienda mediante formularios.
-        El frontend se comunica con el backend a través de llamadas fetch a los endpoints, mostrando el resultado en tiempo real.
-      </p>
-    </div>
-
-    <div class="objetivo">
-      <div class="etiqueta">• B A C K E N D </div>
-      <p>
-        Servicio desarrollado en Python con FastAPI expone endpoints REST para consumir los modelos.
-        Configuración de CORS para permitir la comunicación con el frontend en React.
-      </p>
-    </div>
-
-    {/* Recuadro Celeste */}
-      <div className="arquitectura-box">
-        <p>
-          El diseño modular permite escalar fácilmente y mantener una comunicación
-          ágil entre React y FastAPI, asegurando rapidez y flexibilidad.
-        </p>
-      </div>
-    </div>
-
-    {/* Logos con react-icons */}
-    <div className="arquitectura-logos">
-      <SiPython />
-      <SiReact />
-      <SiFastapi />
-      <SiNumpy />
-    </div>
-
-  <div class="decor decor-bottom">
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-  </div>
-</div>
-</motion.section>
-
-      {/* 🔹 Slide 5 - EDA */}
+      {/* 🔹 Slide 4 - Arquitectura */}
       <motion.section
-        className="slide eda"
+        className="slide arquitectura"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
-        <h2>Análisis Exploratorio de Datos</h2>
-        <p>
-          El dataset incluye características como calidad general,
-          área habitable, baños, garaje, año de construcción y
-          variables de contexto como barrio.
-        </p>
-        <img src={graficoEDA} alt="Gráfico Comparativo de Modelos" className="eda-image" />
-        <p>
-          Se identificaron correlaciones clave entre superficie,
-          calidad y año de construcción con el precio final.
-        </p>
-      </motion.section>
+        <div className="slide-arquitectura">
+          <div className="decor decor-top">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
 
-      {/* 🔹 Slide 6 - Técnicas y Modelos */}
-      <motion.section
-        className="slide modelos"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2>Técnicas y Modelos</h2>
-        <div className="estrategia-cards">
-          <div className="card">
-            <FaChartLine className="icon" />
-            <h3>Modelo Simple</h3>
-            <p>Variables estructurales básicas (calidad, superficie, baños).</p>
+          <h2 className="arquitectura-titulo">ARQUITECTURA DE LA SOLUCION</h2>
+
+          <div className="objetivos">
+            <div className="objetivo">
+              <div className="etiqueta">• F R O N T E N D </div>
+              <p>
+                Interfaz construida en React permite que los usuarios carguen los datos de una vivienda mediante formularios.
+                El frontend se comunica con el backend a través de llamadas fetch a los endpoints, mostrando el resultado en tiempo real.
+              </p>
+            </div>
+
+            <div className="objetivo">
+              <div className="etiqueta">• B A C K E N D </div>
+              <p>
+                Servicio desarrollado en Python con FastAPI expone endpoints REST para consumir los modelos.
+                Configuración de CORS para permitir la comunicación con el frontend en React.
+              </p>
+            </div>
+
+            {/* Recuadro Celeste */}
+            <div className="arquitectura-box">
+              <p>
+                El diseño modular permite escalar fácilmente y mantener una comunicación
+                ágil entre React y FastAPI, asegurando rapidez y flexibilidad.
+              </p>
+            </div>
           </div>
-          <div className="card">
-            <FaUsers className="icon" />
-            <h3>Modelo Enriquecido</h3>
-            <p>Añade contexto como número de escuelas cercanas.</p>
+
+          {/* Logos con react-icons */}
+          <div className="arquitectura-logos">
+            <SiPython />
+            <SiReact />
+            <SiFastapi />
+            <SiNumpy />
           </div>
-          <div className="card">
-            <FaCogs className="icon" />
-            <h3>Modelo Complejo</h3>
-            <p>Incluye variables categóricas como barrio y estilo de vivienda.</p>
-          </div>
-          <div className="card">
-            <FaCogs className="icon" />
-            <h3>Modelo Categorico</h3>
-            <p>Determina si un vivienda tiene un percio bajo, medio o alto.</p>
+
+          <div className="decor decor-bottom">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
           </div>
         </div>
       </motion.section>
 
+      {/* 🔹 Slide 5 - EDA (con estética de estadística) */}
+      <motion.section
+        className="slide eda estadistica"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="stat-card">
+          {/* TOP-RIGHT DECOR */}
+          <svg className="decor-svg decor-topright" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden>
+            <circle cx="280" cy="80" r="36" fill="#61dafb"/>
+            <circle cx="200" cy="110" r="20" fill="#61dafb"/>
+            <circle cx="160" cy="300" r="12" fill="#61dafb"/>
+          </svg>
 
+          {/* BOTTOM-LEFT DECOR */}
+          <svg className="decor-svg decor-bottomleft" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden>
+            <circle cx="110" cy="280" r="40" fill="#61dafb"/>
+            <circle cx="160" cy="300" r="12" fill="#61dafb"/>
+            <circle cx="190" cy="200" r="20" fill="#61dafb"/>
+          </svg>
 
+          {/* Contenido centrado con texto de EDA */}
+          <div className="stat-content">
+            <h2>ANALISIS EXPLORATORIO DE DATOS</h2>
+            <p>
+              El dataset incluye características como calidad general,
+              área habitable, baños, garaje, año de construcción y
+              variables de contexto como barrio.
+            </p>
+            <img src={graficoEDA} alt="Gráfico Comparativo de Modelos" className="eda-image" />
+            <p>
+              Se identificaron correlaciones clave entre superficie,
+              calidad y año de construcción con el precio final.
+            </p>
+          </div>
+        </div>
+      </motion.section>
 
+      {/* 🔹 Slide 6 - Técnicas y Modelos */}
+      <motion.section
+        className="slide infografia"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2>TÉCNICAS Y MODELOS</h2>
+        <div className="infografia-content">
+          {/* Lado izquierdo */}
+          <div className="texto izquierda">
+            <div className="item">
+              <h3>01. Modelo Simple</h3>
+              <p>
+                Variables estructurales básicas: calidad de materiales, superficie
+                total, número de baños.
+              </p>
+            </div>
+            <div className="item">
+              <h3>02. Modelo Enriquecido</h3>
+              <p>
+                Añade factores de contexto, como la cantidad de escuelas cercanas y
+                características adicionales del entorno.
+              </p>
+            </div>
+          </div>
+
+          {/* Centro con iconos */}
+          <div className="iconos">
+            <div className="gota top-left">
+              <FaSeedling className="icon" />
+            </div>
+            <div className="gota top-right">
+              <FaHome className="icon" />
+            </div>
+            <div className="gota bottom-left">
+              <FaProjectDiagram className="icon" />
+            </div>
+            <div className="gota bottom-right">
+              <FaTags className="icon" />
+            </div>
+          </div>
+
+          {/* Lado derecho */}
+          <div className="texto derecha">
+            <div className="item">
+              <h3>03. Modelo Complejo</h3>
+              <p>
+                Incluye variables categóricas como el barrio
+                (<em>Neighborhood</em>) y el estilo de la vivienda
+                (<em>HouseStyle</em>), aumentando la precisión del modelo.
+              </p>
+            </div>
+            <div className="item">
+              <h3>04. Modelo Categorico</h3>
+              <p>
+                Agrupa viviendas en rangos de precio (Bajo, Medio, Alto) usando un
+                Random Forest Classifier para facilitar la interpretación.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.section>
     </div>
   );
 }
