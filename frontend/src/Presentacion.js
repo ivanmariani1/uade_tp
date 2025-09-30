@@ -18,7 +18,7 @@ export default function Presentacion() {
         viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
-        <h1>PREDICCION DE PRECIOS DE VIVIENDAS</h1>
+        <h1>PREDICCIÓN DE PRECIOS DE VIVIENDAS</h1>
         <p className="autor">Equipo de Desarrollo - Faraldo, Maria Eugenia - Luciano, Agostina - Mariani, Ivan - Nicolas, Muriel
 
         </p>
@@ -56,7 +56,7 @@ export default function Presentacion() {
           </p>
         </div>
         <div className="right-box">
-          <h3>PROBLEMATICA</h3>
+          <h3>PROBLEMÁTICA</h3>
           <p>
             Las estimaciones actuales suelen ser subjetivas y poco precisas.
           </p>
@@ -100,7 +100,7 @@ export default function Presentacion() {
             <span></span><span></span><span></span><span></span>
           </div>
 
-          <h2 className="arquitectura-titulo">ARQUITECTURA DE LA SOLUCION</h2>
+          <h2 className="arquitectura-titulo">ARQUITECTURA DE LA SOLUCIÓN</h2>
 
           <div className="objetivos">
             <div className="objetivo">
